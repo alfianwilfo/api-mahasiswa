@@ -1,4 +1,5 @@
 let { Mahasiswa } = require("../models/index");
+let Validator = require("validatorjs");
 class ControllerMahasiswa {
   static async getAll(req, res) {
     try {
@@ -11,11 +12,19 @@ class ControllerMahasiswa {
 
   static async findById(req, res) {
     try {
-      let { id } = req.params;
-      let data = await Mahasiswa.findByPk(id);
-      res.json(data);
+      let id = req.params.id;
+      let validation = new Validator({ id: id }, { id: "required" });
+      let passes = async () => {
+        // Validation passed
+        let data = await Mahasiswa.findByPk(id);
+        res.json(data);
+      };
+      let fails = async () => {
+        res.status(400).json({ message: "params id can't empty" });
+      };
+      validation.checkAsync(passes, fails);
     } catch (error) {
-      console.log(error);
+      console.log(error, "??");
     }
   }
 
