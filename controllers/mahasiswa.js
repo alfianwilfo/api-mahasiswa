@@ -13,7 +13,21 @@ class ControllerMahasiswa {
     try {
       let { id } = req.params;
       let data = await Mahasiswa.findByPk(id);
-      console.log(data);
+      res.json(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async createMahasiswa(req, res) {
+    try {
+      let { nama } = req.body;
+      let createdMahasiswa = await Mahasiswa.create({ nama });
+      res
+        .status(201)
+        .json({
+          message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
+        });
     } catch (error) {
       console.log(error);
     }
