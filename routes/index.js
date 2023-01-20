@@ -5,5 +5,6 @@ const matkul = require("./matkul");
 
 app.use("/mahasiswa", mahasiswa);
 app.use("/matkul", matkul);
+app.use("/studi");
 
 module.exports = app;
