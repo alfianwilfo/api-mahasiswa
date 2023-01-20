@@ -2,28 +2,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("MatkulMahasiswas", {
+    await queryInterface.createTable("RencanaStudis", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      matkul: {
+      IdMahasiswa: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Matkuls",
+          model: "Mahasiswas",
           key: "id",
         },
         onUpdate: "cascade",
         onDelete: "cascade",
       },
-      mahasiswa: {
+      IdMatkul: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Mahasiswas",
+          model: "Matkuls",
           key: "id",
         },
         onUpdate: "cascade",
@@ -40,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("MatkulMahasiswas");
+    await queryInterface.dropTable("RencanaStudis");
   },
 };
