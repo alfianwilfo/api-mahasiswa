@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/alfianwilfo/api-mahasiswa#readme",
   "dependencies": {
+    "mysql2": "^3.0.1",
     "sequelize": "^6.28.0"
   }
 }
