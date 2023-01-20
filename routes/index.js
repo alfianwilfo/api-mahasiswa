@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
+const mahasiswa = require("./mahasiswa");
 
-app.get("/", (req, res) => {
-  res.json({ msg: "HALO" });
-});
+app.use("/mahasiswa", mahasiswa);
 
 module.exports = app;
