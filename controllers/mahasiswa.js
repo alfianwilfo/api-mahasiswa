@@ -34,8 +34,22 @@ class ControllerMahasiswa {
   static async deleteMahasiswa(req, res) {
     try {
       let { id } = req.params;
-      let updatedMahasiswa = await Mahasiswa.destroy({ where: { id: id } });
+      let updatedMahasiswa = await Mahasiswa.destroy({ where: { id } });
       res.json({ message: "Mahasiswa Berhasil dihapus dari database" });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async updateMahasiswaName(req, res) {
+    try {
+      let { id } = req.params;
+      let { nama } = req.body;
+      let updatedMahasiswa = await Mahasiswa.update(
+        { nama },
+        { where: { id } }
+      );
+      res.json({ message: "Nama mahasiswa berhasil di update" });
     } catch (error) {
       console.log(error);
     }
