@@ -42,15 +42,16 @@ let checkRequestMatkul = async (req, res, next) => {
       },
       () => {
         let msg = validation.errors.first("nama");
-        throw { msg };
+        throw { name: "validator", status: 401, msg };
       }
     );
   } catch (error) {
-    if (error.msg) {
-      res.status(401).json({ message: error.msg });
-    } else {
-      res.status(500).json({ message: "Internal server error" });
-    }
+    next(error);
+    // if (error.msg) {
+    //   res.status(401).json({ message: error.msg });
+    // } else {
+    //   res.status(500).json({ message: "Internal server error" });
+    // }
   }
 };
 

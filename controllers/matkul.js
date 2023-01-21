@@ -1,15 +1,15 @@
 let Validator = require("validatorjs");
 let { Matkul } = require("../models/");
 class ControllerMatkul {
-  static async getAll(req, res) {
+  static async getAll(req, res, next) {
     try {
       let data = await Matkul.findAll();
       res.json(data);
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+      next();
     }
   }
-  static async createMatkul(req, res) {
+  static async createMatkul(req, res, next) {
     try {
       let { nama } = req.body;
       let createdMatkul = await Matkul.create({ nama });
@@ -18,15 +18,11 @@ class ControllerMatkul {
         message: `Matkul ${nama} berhasil dimasukkan kedalam database dan mendapatkan id ${createdMatkul.id}`,
       });
     } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(400).json({ message: error.errors[0].message });
-      } else {
-        res.status(500).json({ message: "Internal server error" });
-      }
+      next(error);
     }
   }
 
-  static async updateMatkulName(req, res) {
+  static async updateMatkulName(req, res, next) {
     try {
       let { nama } = req.body;
       let { id } = req.params;
@@ -35,11 +31,7 @@ class ControllerMatkul {
         message: `Success update Nama matkul`,
       });
     } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(400).json({ message: error.errors[0].message });
-      } else {
-        res.status(500).json({ message: "Internal server error" });
-      }
+      next(error);
     }
   }
 
@@ -49,7 +41,7 @@ class ControllerMatkul {
       let deletedMatkul = await Matkul.destroy({ where: { id } });
       res.json({ message: "Matkul berhasil di delete" });
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+      next(error);
     }
   }
 }
