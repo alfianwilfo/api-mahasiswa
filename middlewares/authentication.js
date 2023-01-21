@@ -1,5 +1,5 @@
 let Validator = require("validatorjs");
-let { Matkul } = require("../models/");
+let { Matkul, Mahasiswa } = require("../models/");
 let checkMatkul = async (req, res, next) => {
   try {
     let { id } = req.params;
@@ -72,17 +72,14 @@ let checkRequestMahasiswa = (req, res, next) => {
     );
     validator.checkAsync(
       () => {
-        console.log("MASUK");
         next();
       },
       () => {
         let msg = validator.errors.first("nama");
-        console.log(msg);
         throw { msg };
       }
     );
   } catch (error) {
-    console.log(error);
     if (error.msg) {
       res.status(401).json({ message: error.msg });
     } else {
@@ -91,4 +88,39 @@ let checkRequestMahasiswa = (req, res, next) => {
   }
 };
 
-module.exports = { checkMatkul, checkRequestMatkul, checkRequestMahasiswa };
+let checkMahasiswa = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+    let findedMahasiswa = await Mahasiswa.findByPk(id);
+    let validateFindedMahasiswa = new Validator(
+      { findedMahasiswa },
+      { findedMahasiswa: "required" },
+      { required: "Mahasiswa not found" }
+    );
+
+    // console.log(validateFindedMahasiswa);
+
+    validateFindedMahasiswa.checkAsync(
+      () => {
+        next();
+      },
+      () => {
+        let msg = validateFindedMahasiswa.errors.first("findedMahasiswa");
+        throw { msg };
+      }
+    );
+  } catch (error) {
+    if (error.msg) {
+      res.status(401).json({ message: error.msg });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
+
+module.exports = {
+  checkMatkul,
+  checkRequestMatkul,
+  checkRequestMahasiswa,
+  checkMahasiswa,
+};
