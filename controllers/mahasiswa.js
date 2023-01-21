@@ -46,7 +46,12 @@ class ControllerMahasiswa {
           nama,
         },
         {
-          nama: "required|min:3|regex:/^[a-zA-Z]*$/",
+          nama: "required|regex:/^[a-zA-Z]*$/|min:3",
+        },
+        {
+          required: "You forgot to give a :attribute",
+          regex: ":attribute format invalid",
+          min: ":attribute length minimum 3 character",
         }
       );
       function fails() {
@@ -72,7 +77,8 @@ class ControllerMahasiswa {
   static async deleteMahasiswa(req, res) {
     try {
       let { id } = req.params;
-      let updatedMahasiswa = await Mahasiswa.destroy({ where: { id } });
+      let deleteMahasiswa = await Mahasiswa.destroy({ where: { id } });
+      console.log(deleteMahasiswa);
       res.json({ message: "Mahasiswa Berhasil dihapus dari database" });
     } catch (error) {
       console.log(error);
