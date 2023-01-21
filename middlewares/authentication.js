@@ -23,4 +23,35 @@ let checkMatkul = async (req, res, next) => {
   }
 };
 
-module.exports = { checkMatkul };
+let checkRequestMatkul = async (req, res, next) => {
+  try {
+    let { nama } = req.body;
+    let validation = new Validator(
+      { nama },
+      { nama: "required|regex:/^[a-zA-Z0-9]*$/|min:3" },
+      {
+        required: "Nama matkul can't empty",
+        regex: "Nama matkul can only filled with character and number",
+        min: "Nama matkul length character must be at least 3 character",
+      }
+    );
+    validation.checkAsync(
+      () => {
+        console.log("BERHASIL CHECK");
+        next();
+      },
+      () => {
+        let msg = validation.errors.first("nama");
+        throw { msg };
+      }
+    );
+  } catch (error) {
+    if (error.msg) {
+      res.status(401).json({ message: error.msg });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
+
+module.exports = { checkMatkul, checkRequestMatkul };
