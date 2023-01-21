@@ -1,12 +1,11 @@
 let { RencanaStudi } = require("../models/");
 class ControllerStudi {
-  static async getAll(req, res) {
+  static async getAll(req, res, next) {
     try {
-      console.log("MASUK");
       let data = await RencanaStudi.findAll();
       res.json(data);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
   static async createRencanaStudi(req, res) {
