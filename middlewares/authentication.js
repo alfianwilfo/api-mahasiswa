@@ -62,12 +62,11 @@ let checkRequestMahasiswa = (req, res, next) => {
         nama,
       },
       {
-        nama: `required|regex:^[a-zA-Z]+[a-zA-Z-]*$|min:3`,
+        nama: `required|regex:^[a-zA-Z]+[a-zA-Z-]*$`,
       },
       {
         required: "You forgot to give a :attribute",
         regex: ":attribute format invalid",
-        min: ":attribute length minimum 3 character",
       }
     );
     validator.checkAsync(
