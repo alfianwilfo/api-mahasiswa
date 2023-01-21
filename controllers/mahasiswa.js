@@ -78,10 +78,32 @@ class ControllerMahasiswa {
     try {
       let { id } = req.params;
       let deleteMahasiswa = await Mahasiswa.destroy({ where: { id } });
-      console.log(deleteMahasiswa);
-      res.json({ message: "Mahasiswa Berhasil dihapus dari database" });
+      let validator = new Validator(
+        {
+          deleteMahasiswa,
+        },
+        {
+          deleteMahasiswa: "accepted",
+        },
+        {
+          accepted: `Mahasiswa not found`,
+        }
+      );
+      validator.checkAsync(passes, fails);
+
+      function fails() {
+        let msg = validator.errors.first("deleteMahasiswa");
+        throw { msg };
+      }
+      async function passes() {
+        res.json({ message: "Berhasil menghapus mahasiswa" });
+      }
     } catch (error) {
-      console.log(error);
+      if (error.msg) {
+        res.status(404).json({ message: error.msg });
+      } else {
+        res.status(500).json({ message: "Internal server error" });
+      }
     }
   }
 
