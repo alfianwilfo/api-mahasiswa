@@ -54,4 +54,41 @@ let checkRequestMatkul = async (req, res, next) => {
   }
 };
 
-module.exports = { checkMatkul, checkRequestMatkul };
+let checkRequestMahasiswa = (req, res, next) => {
+  try {
+    let { nama } = req.body;
+    let validator = new Validator(
+      {
+        nama,
+      },
+      {
+        nama: `required|regex:^[a-zA-Z]+[a-zA-Z-]*$|min:3`,
+      },
+      {
+        required: "You forgot to give a :attribute",
+        regex: ":attribute format invalid",
+        min: ":attribute length minimum 3 character",
+      }
+    );
+    validator.checkAsync(
+      () => {
+        console.log("MASUK");
+        next();
+      },
+      () => {
+        let msg = validator.errors.first("nama");
+        console.log(msg);
+        throw { msg };
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    if (error.msg) {
+      res.status(401).json({ message: error.msg });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
+
+module.exports = { checkMatkul, checkRequestMatkul, checkRequestMahasiswa };

@@ -20,15 +20,15 @@ class ControllerMahasiswa {
       let validation = new Validator(input, rules, {
         required: "Mahasiswa tidak ditemukan",
       });
-      function passes() {
-        res.json(data);
-      }
-      function fails() {
-        let msg = validation.errors.first("data");
-        throw { msg };
-      }
-      validation.checkAsync(passes, fails);
-      res.json(data);
+      validation.checkAsync(
+        () => {
+          res.json(data);
+        },
+        () => {
+          let msg = validation.errors.first("data");
+          throw { msg };
+        }
+      );
     } catch (error) {
       if (error.msg) {
         res.status(400).json({ message: error.msg });
@@ -41,36 +41,12 @@ class ControllerMahasiswa {
   static async createMahasiswa(req, res) {
     try {
       let { nama } = req.body;
-      let validator = new Validator(
-        {
-          nama,
-        },
-        {
-          nama: "required|regex:/^[a-zA-Z]*$/|min:3",
-        },
-        {
-          required: "You forgot to give a :attribute",
-          regex: ":attribute format invalid",
-          min: ":attribute length minimum 3 character",
-        }
-      );
-      function fails() {
-        let msg = validator.errors.first("nama");
-        throw { msg };
-      }
-      async function passes() {
-        let createdMahasiswa = await Mahasiswa.create({ nama });
-        res.status(201).json({
-          message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
-        });
-      }
-      validator.checkAsync(passes, fails);
+      let createdMahasiswa = await Mahasiswa.create({ nama });
+      res.status(201).json({
+        message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
+      });
     } catch (error) {
-      if (error.msg) {
-        res.status(400).json({ message: error.msg });
-      } else {
-        res.status(500).json({ message: "Internal server error" });
-      }
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 
