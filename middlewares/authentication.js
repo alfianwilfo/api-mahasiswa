@@ -1,5 +1,5 @@
 let Validator = require("validatorjs");
-let { Matkul, Mahasiswa } = require("../models/");
+let { Matkul, Mahasiswa, RencanaStudi } = require("../models/");
 let checkMatkul = async (req, res, next) => {
   try {
     let { id } = req.params;
@@ -89,8 +89,6 @@ let checkMahasiswa = async (req, res, next) => {
       { required: "Mahasiswa not found" }
     );
 
-    // console.log(validateFindedMahasiswa);
-
     validateFindedMahasiswa.checkAsync(
       () => {
         next();
@@ -123,13 +121,86 @@ let checkInputForStudi = async (req, res, next) => {
       }
     );
     validateId.checkAsync(
-      () => {
-        next();
+      async () => {
+        try {
+          let findedMahasiswa = await Mahasiswa.findByPk(IdMahasiswa);
+          if (!findedMahasiswa) {
+            throw {
+              name: "validator",
+              status: 404,
+              msg: "Mahasiswa not found",
+            };
+          }
+          let findedMatkul = await Matkul.findByPk(IdMatkul);
+          if (!findedMatkul) {
+            throw {
+              name: "validator",
+              status: 404,
+              msg: "Matkul not found",
+            };
+          }
+          next();
+        } catch (error) {
+          next(error);
+        }
+        // next();
       },
       () => {
         let msg =
           validateId.errors.first("IdMahasiswa") ||
           validateId.errors.first("IdMatkul");
+        throw { name: "validator", status: 401, msg };
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+let checkQuota = async (req, res, next) => {
+  try {
+    let IdMahasiswa = +req.body.IdMahasiswa;
+
+    let countMatkulMahasiswa = await RencanaStudi.count({
+      where: { IdMahasiswa },
+    });
+    let validateCount = new Validator(
+      { countMatkulMahasiswa },
+      { countMatkulMahasiswa: "between:0,2" },
+      { between: "Your rencana studi has reached limit" }
+    );
+    validateCount.checkAsync(
+      () => {
+        next();
+      },
+      () => {
+        let msg = validateCount.errors.first("countMatkulMahasiswa");
+        throw { name: "validator", status: 401, msg };
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+let countMatkulSelector = async (req, res, next) => {
+  try {
+    let IdMatkul = +req.body.IdMatkul;
+    let countMatkulSelector = await RencanaStudi.count({
+      where: { IdMatkul },
+    });
+    let validate = new Validator(
+      { countMatkulSelector },
+      { countMatkulSelector: "max:3" },
+      { max: "Matkul selector has reached limit" }
+    );
+
+    validate.checkAsync(
+      () => {
+        next();
+      },
+      () => {
+        let msg = validate.errors.first("countMatkulSelector");
         throw { name: "validator", status: 401, msg };
       }
     );
@@ -144,4 +215,6 @@ module.exports = {
   checkRequestMahasiswa,
   checkMahasiswa,
   checkInputForStudi,
+  checkQuota,
+  countMatkulSelector,
 };
