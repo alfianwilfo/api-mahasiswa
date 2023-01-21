@@ -13,16 +13,9 @@ class ControllerMahasiswa {
   static async findById(req, res) {
     try {
       let id = req.params.id;
-      let validation = new Validator({ id: id }, { id: "required" });
-      let passes = async () => {
-        // Validation passed
-        let data = await Mahasiswa.findByPk(id);
-        res.json(data);
-      };
-      let fails = async () => {
-        res.status(400).json({ message: "params id can't empty" });
-      };
-      validation.checkAsync(passes, fails);
+
+      let data = await Mahasiswa.findByPk(id);
+      res.json(data);
     } catch (error) {
       console.log(error, "??");
     }
@@ -31,6 +24,8 @@ class ControllerMahasiswa {
   static async createMahasiswa(req, res) {
     try {
       let { nama } = req.body;
+      let validation = new Validator({ nama: nama }, { id: "required" });
+
       let createdMahasiswa = await Mahasiswa.create({ nama });
       res.status(201).json({
         message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
