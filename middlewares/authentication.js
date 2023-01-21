@@ -28,7 +28,7 @@ let checkRequestMatkul = async (req, res, next) => {
     let { nama } = req.body;
     let validation = new Validator(
       { nama },
-      { nama: "required|regex:/^[a-zA-Z0-9]*$/|min:3" },
+      { nama: `required|regex:/^[a-zA-Z0-9 ]+$/|min:3` },
       {
         required: "Nama matkul can't empty",
         regex: "Nama matkul can only filled with character and number",
@@ -37,7 +37,6 @@ let checkRequestMatkul = async (req, res, next) => {
     );
     validation.checkAsync(
       () => {
-        console.log("BERHASIL CHECK");
         next();
       },
       () => {
