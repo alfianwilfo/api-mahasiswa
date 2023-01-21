@@ -17,11 +17,9 @@ class ControllerStudi {
         IdMahasiswa,
         IdMatkul,
       });
-      res
-        .status(201)
-        .json({ message: `Rencana studi berhasil ditambahkan ke database` });
+      res.status(201).json({ message: `Success create rencana studi` });
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 
