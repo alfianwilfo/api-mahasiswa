@@ -105,9 +105,43 @@ let checkMahasiswa = async (req, res, next) => {
   }
 };
 
+let checkInputForStudi = async (req, res, next) => {
+  try {
+    let IdMahasiswa = +req.body.IdMahasiswa;
+    let IdMatkul = +req.body.IdMatkul;
+    let validateId = new Validator(
+      {
+        IdMahasiswa,
+        IdMatkul,
+      },
+      {
+        IdMahasiswa: "min:1",
+        IdMatkul: "min:1",
+      },
+      {
+        min: "Invalid format :attribute",
+      }
+    );
+    validateId.checkAsync(
+      () => {
+        next();
+      },
+      () => {
+        let msg =
+          validateId.errors.first("IdMahasiswa") ||
+          validateId.errors.first("IdMatkul");
+        throw { name: "validator", status: 401, msg };
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   checkMatkul,
   checkRequestMatkul,
   checkRequestMahasiswa,
   checkMahasiswa,
+  checkInputForStudi,
 };
