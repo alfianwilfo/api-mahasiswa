@@ -42,7 +42,7 @@ let checkRequestMatkul = async (req, res, next) => {
       },
       () => {
         let msg = validation.errors.first("nama");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 400, msg };
       }
     );
   } catch (error) {
@@ -71,7 +71,7 @@ let checkRequestMahasiswa = (req, res, next) => {
       },
       () => {
         let msg = validator.errors.first("nama");
-        throw { status: 401, name: "validator", msg };
+        throw { status: 400, name: "validator", msg };
       }
     );
   } catch (error) {
@@ -95,7 +95,7 @@ let checkMahasiswa = async (req, res, next) => {
       },
       () => {
         let msg = validateFindedMahasiswa.errors.first("findedMahasiswa");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 404, msg };
       }
     );
   } catch (error) {
@@ -154,7 +154,6 @@ let checkInputForStudi = async (req, res, next) => {
         } catch (error) {
           next(error);
         }
-        // next();
       },
       () => {
         let msg =
@@ -186,7 +185,7 @@ let checkQuota = async (req, res, next) => {
       },
       () => {
         let msg = validateCount.errors.first("countMatkulMahasiswa");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 400, msg };
       }
     );
   } catch (error) {
@@ -212,7 +211,7 @@ let countMatkulSelector = async (req, res, next) => {
       },
       () => {
         let msg = validate.errors.first("countMatkulSelector");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 400, msg };
       }
     );
   } catch (error) {
