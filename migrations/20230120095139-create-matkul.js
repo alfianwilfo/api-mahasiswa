@@ -11,6 +11,7 @@ module.exports = {
       },
       nama: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING,
       },
       createdAt: {
