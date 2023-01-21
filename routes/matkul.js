@@ -6,6 +6,6 @@ const { checkMatkul } = require("../middlewares/authentication");
 app.get("/", matkul.getAll);
 app.post("/", matkul.createMatkul);
 app.patch("/:id", checkMatkul, matkul.updateMatkulName);
-app.delete("/:id", matkul.deleteMatkul);
+app.delete("/:id", checkMatkul, matkul.deleteMatkul);
 
 module.exports = app;
