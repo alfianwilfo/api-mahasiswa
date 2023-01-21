@@ -31,7 +31,8 @@ let checkRequestMatkul = async (req, res, next) => {
       { nama: `required|regex:/^[a-zA-Z0-9 ]+$/|min:3` },
       {
         required: "Nama matkul can't empty",
-        regex: "Nama matkul can only filled with character and number",
+        regex:
+          "Nama matkul can only filled with character, number and white space",
         min: "Nama matkul length character must be at least 3 character",
       }
     );
