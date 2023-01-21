@@ -1,6 +1,6 @@
 let Validator = require("validatorjs");
 let { Matkul } = require("../models/");
-let authenticationMatkul = async (req, res, next) => {
+let checkMatkul = async (req, res, next) => {
   try {
     let { id } = req.params;
     let findedMatkul = await Matkul.findByPk(id);
@@ -23,4 +23,4 @@ let authenticationMatkul = async (req, res, next) => {
   }
 };
 
-module.exports = { authenticationMatkul };
+module.exports = { checkMatkul };
