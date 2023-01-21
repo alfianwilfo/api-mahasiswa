@@ -139,7 +139,18 @@ let checkInputForStudi = async (req, res, next) => {
               msg: "Matkul not found",
             };
           }
-          next();
+          let isAlreadyPicked = await RencanaStudi.findOne({
+            where: { IdMatkul, IdMahasiswa },
+          });
+          if (!isAlreadyPicked) {
+            next();
+          } else {
+            throw {
+              name: "validator",
+              status: 400,
+              msg: "You already pick this matkul",
+            };
+          }
         } catch (error) {
           next(error);
         }
@@ -149,7 +160,7 @@ let checkInputForStudi = async (req, res, next) => {
         let msg =
           validateId.errors.first("IdMahasiswa") ||
           validateId.errors.first("IdMatkul");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 400, msg };
       }
     );
   } catch (error) {
