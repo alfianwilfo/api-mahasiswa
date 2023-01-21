@@ -12,36 +12,14 @@ class ControllerMatkul {
   static async createMatkul(req, res) {
     try {
       let { nama } = req.body;
-      let validation = new Validator(
-        { nama },
-        { nama: "required|regex:/^[a-zA-Z0-9]*$/|min:3" },
-        {
-          required: "Nama matkul can't empty",
-          regex: "Nama matkul can only filled with character and number",
-          min: "Nama matkul length character must be at least 3 character",
-        }
-      );
+      let createdMatkul = await Matkul.create({ nama });
 
-      async function passes() {
-        try {
-          let createdMatkul = await Matkul.create({ nama });
-          res.status(201).json({
-            message: `Matkul ${nama} berhasil dimasukkan kedalam database dan mendapatkan id ${createdMatkul.id}`,
-          });
-        } catch (error) {
-          if (error.name === "SequelizeUniqueConstraintError") {
-            res.status(400).json({ message: error.errors[0].message });
-          }
-        }
-      }
-      function fails() {
-        let msg = validation.errors.first("nama");
-        throw { msg };
-      }
-      validation.checkAsync(passes, fails);
+      res.status(201).json({
+        message: `Matkul ${nama} berhasil dimasukkan kedalam database dan mendapatkan id ${createdMatkul.id}`,
+      });
     } catch (error) {
-      if (error.msg) {
-        res.status(401).json({ message: error.msg });
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(400).json({ message: error.errors[0].message });
       } else {
         res.status(500).json({ message: "Internal server error" });
       }
@@ -52,10 +30,16 @@ class ControllerMatkul {
     try {
       let { nama } = req.body;
       let { id } = req.params;
-      let updatedMatkul = await Matkul.update({ nama }, { where: { id } });
-      res.json({ message: "Nama matkul berhasil di update" });
+      let createdMatkul = await Matkul.update({ nama }, { where: { id } });
+      res.status(201).json({
+        message: `Success update Nama matkul`,
+      });
     } catch (error) {
-      console.log(error);
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(400).json({ message: error.errors[0].message });
+      } else {
+        res.status(500).json({ message: "Internal server error" });
+      }
     }
   }
 
@@ -65,7 +49,7 @@ class ControllerMatkul {
       let deletedMatkul = await Matkul.destroy({ where: { id } });
       res.json({ message: "Matkul berhasil di delete" });
     } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 }
