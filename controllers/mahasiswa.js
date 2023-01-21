@@ -1,12 +1,12 @@
 let { Mahasiswa } = require("../models/index");
 let Validator = require("validatorjs");
 class ControllerMahasiswa {
-  static async getAll(req, res) {
+  static async getAll(req, res, next) {
     try {
       let data = await Mahasiswa.findAll();
       res.json(data);
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+      next(error);
     }
   }
 
