@@ -15,11 +15,11 @@ let checkMatkul = async (req, res, next) => {
       },
       () => {
         let msg = validation.errors.first("findedMatkul");
-        throw { msg: msg };
+        throw { name: "validator", status: 404, msg: msg };
       }
     );
   } catch (error) {
-    res.status(404).json({ message: error.msg });
+    next(error);
   }
 };
 
@@ -47,11 +47,6 @@ let checkRequestMatkul = async (req, res, next) => {
     );
   } catch (error) {
     next(error);
-    // if (error.msg) {
-    //   res.status(401).json({ message: error.msg });
-    // } else {
-    //   res.status(500).json({ message: "Internal server error" });
-    // }
   }
 };
 
@@ -76,15 +71,11 @@ let checkRequestMahasiswa = (req, res, next) => {
       },
       () => {
         let msg = validator.errors.first("nama");
-        throw { msg };
+        throw { status: 401, name: "validator", msg };
       }
     );
   } catch (error) {
-    if (error.msg) {
-      res.status(401).json({ message: error.msg });
-    } else {
-      res.status(500).json({ message: "Internal server error" });
-    }
+    next(error);
   }
 };
 
@@ -106,15 +97,11 @@ let checkMahasiswa = async (req, res, next) => {
       },
       () => {
         let msg = validateFindedMahasiswa.errors.first("findedMahasiswa");
-        throw { msg };
+        throw { name: "validator", status: 401, msg };
       }
     );
   } catch (error) {
-    if (error.msg) {
-      res.status(401).json({ message: error.msg });
-    } else {
-      res.status(500).json({ message: "Internal server error" });
-    }
+    next(error);
   }
 };
 
