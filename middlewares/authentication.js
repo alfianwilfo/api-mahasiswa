@@ -208,12 +208,46 @@ let countMatkulSelector = async (req, res, next) => {
     validate.checkAsync(
       () => {
         next();
+        console.log("masuk");
       },
       () => {
         let msg = validate.errors.first("countMatkulSelector");
         throw { name: "validator", status: 400, msg };
       }
     );
+  } catch (error) {
+    next(error);
+  }
+};
+
+let findRencanaStudi = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+
+    let findedRencanaStudi = await RencanaStudi.findByPk(id);
+    if (findedRencanaStudi.IdMatkul === +req.body.IdMatkul) {
+      throw {
+        name: "validator",
+        status: 400,
+        msg: "You already pick this matkul",
+      };
+    } else {
+      let validate = new Validator(
+        { findedRencanaStudi },
+        { findedRencanaStudi: "required" },
+        { required: "Rencana studi not found" }
+      );
+      validate.checkAsync(
+        () => {
+          req.idMatkulRencanaStudi = findedRencanaStudi.IdMatkul;
+          next();
+        },
+        () => {
+          let msg = validate.errors.first("findedRencanaStudi");
+          throw { name: "validator", status: 404, msg };
+        }
+      );
+    }
   } catch (error) {
     next(error);
   }
@@ -227,4 +261,5 @@ module.exports = {
   checkInputForStudi,
   checkQuota,
   countMatkulSelector,
+  findRencanaStudi,
 };
