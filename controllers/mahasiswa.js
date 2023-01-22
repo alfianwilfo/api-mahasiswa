@@ -3,7 +3,9 @@ let Validator = require("validatorjs");
 class ControllerMahasiswa {
   static async getAll(req, res, next) {
     try {
-      let data = await Mahasiswa.findAll();
+      let data = await Mahasiswa.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      });
       res.json(data);
     } catch (error) {
       next(error);

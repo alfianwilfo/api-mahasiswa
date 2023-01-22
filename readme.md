@@ -36,3 +36,39 @@ _RencanaStudi_
 - IdMahasiswa: integer, required
 - IdMatkul : integer, required
 ```
+
+## Endpoints :
+
+List of available endpoints:
+
+- `GET /mahasiswa`
+- `POST /mahasiswa`
+- `GET /mahasiswa/:id`
+- `DELETE /mahasiswa/:id`
+- `PATCH /mahasiswa/:id`
+
+- `GET /matkul`
+- `POST /matkul`
+- `PATCH /matkul/:id`
+- `DELETE /matkul/:id`
+
+- `GET /studi`
+- `POST /studi`
+- `PATCH /studi/:id`
+- `DELETE /studi/:id`
+
+&nbsp;
+
+## 1. GET /mahasiswa
+
+_Response (200 - OK)_
+
+```json
+[
+    {
+        "id": Integer,
+        "nama": String
+    },
+    ...
+]
+```
