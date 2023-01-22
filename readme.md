@@ -1,4 +1,4 @@
-# How to run
+# How
 
 clone this repo
 then run:
@@ -12,4 +12,27 @@ npm run start
 
 ```md
 npm run dev
+```
+
+# Kampus API Documentation
+
+## Models :
+
+_Mahasiswa_
+
+```
+- nama : string, required
+```
+
+_Matkul_
+
+```
+- nama : string, required
+```
+
+_RencanaStudi_
+
+```
+- IdMahasiswa: integer, required
+- IdMatkul : integer, required
 ```
