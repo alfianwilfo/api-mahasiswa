@@ -202,13 +202,12 @@ let countMatkulSelector = async (req, res, next) => {
     let validate = new Validator(
       { countMatkulSelector },
       { countMatkulSelector: "max:3" },
-      { max: "Matkul selector has reached limit" }
+      { max: "This matkul full booked" }
     );
 
     validate.checkAsync(
       () => {
         next();
-        console.log("masuk");
       },
       () => {
         let msg = validate.errors.first("countMatkulSelector");

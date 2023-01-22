@@ -29,7 +29,7 @@ class ControllerStudi {
         IdMahasiswa,
         IdMatkul,
       });
-      res.status(201).json({ message: `Success create rencana studi` });
+      res.status(201).json({ message: `Success create new rencana studi` });
     } catch (error) {
       next(error);
     }

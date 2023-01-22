@@ -289,9 +289,13 @@ OR
 {
     "message": "Nama matkul length character must be at least 3 character"
 }
+OR
+{
+    "message": "Nama matkul already registered"
+}
 ```
 
-## 7. PATCH /matkul/:id
+## 8. PATCH /matkul/:id
 
 #### Description
 
@@ -308,7 +312,7 @@ OR
 
 #### Response
 
-_Response (200 - Created)_
+_Response (200 - OK)_
 
 ```json
 {
@@ -337,5 +341,120 @@ OR
 OR
 {
     "message": "Nama matkul length character must be at least 3 character"
+}
+```
+
+## 9. DELETE /matkul/:id
+
+#### Description
+
+- Delete matkul by id
+
+#### Response
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "Success delete matkul"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Matkul not found"
+}
+```
+
+## 10. GET /studi
+
+#### Description
+
+- Get all Rencana studi
+
+_Response (200 - OK)_
+
+```json
+[
+  {
+    "id": Integer,
+    "IdMahasiswa": Integer,
+    "IdMatkul": Integer,
+    "Mahasiswa": {
+      "id": Integer,
+      "nama": String
+    },
+    "Matkul": {
+      "id": Integer,
+      "nama": String
+    }
+  },
+  ...
+]
+```
+
+## 11. POST /studi
+
+#### Description
+
+- Create new rencana studi
+
+#### Request
+
+- Body
+
+  ```json
+  {
+    "IdMahasiswa": Integer,
+  }
+  ```
+
+  _Response (201 - Created)_
+
+  ```json
+  {
+    "message": "Success create new rencana studi"
+  }
+  ```
+
+  _Response (400 - Bad Request)_
+
+```json
+{
+  "message": "Invalid format IdMahasiswa"
+}
+OR
+{
+    "message": "Invalid format IdMatkul"
+}
+OR
+{
+    "message": "You already pick this matkul"
+}
+OR
+{
+    "message": "This rencana studi has reached limit"
+}
+OR
+{
+    "message": "Your rencana studi has reached limit"
+}
+OR
+{
+    "message": "This matkul full booked"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Mahasiswa not found"
+}
+OR
+{
+    "message": "Matkul not found"
 }
 ```
