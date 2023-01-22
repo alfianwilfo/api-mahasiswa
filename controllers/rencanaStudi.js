@@ -53,7 +53,7 @@ class ControllerStudi {
     try {
       let { id } = req.params;
       let deletedRencanaStudi = await RencanaStudi.destroy({ where: { id } });
-      res.json({ message: "Rencana studi berhasil dihapus" });
+      res.json({ message: "Success delete rencana studi" });
     } catch (error) {
       next(error);
     }
