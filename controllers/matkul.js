@@ -42,7 +42,7 @@ class ControllerMatkul {
     try {
       let { id } = req.params;
       let deletedMatkul = await Matkul.destroy({ where: { id } });
-      res.json({ message: "Matkul berhasil di delete" });
+      res.json({ message: "Success delete matkul" });
     } catch (error) {
       next(error);
     }

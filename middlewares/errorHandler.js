@@ -7,7 +7,7 @@ let errorHandler = (err, req, res, next) => {
       msg = err.msg;
       break;
     case "SequelizeUniqueConstraintError":
-      status: 400;
+      status = 400;
       msg = err.errors[0].message;
       break;
   }
