@@ -61,6 +61,8 @@ List of available endpoints:
 
 ## 1. GET /mahasiswa
 
+#### Response
+
 _Response (200 - OK)_
 
 ```json
@@ -71,4 +73,40 @@ _Response (200 - OK)_
     },
     ...
 ]
+```
+
+&nbsp;
+
+## 2. POST /mahasiswa
+
+#### Request
+
+- Body
+
+  ```json
+  {
+    "nama": String,
+  }
+  ```
+
+#### Response
+
+_Response (201 - Created)_
+
+```json
+{
+  "message": ":nama berhasil ditambahkan kedalam database dan mendapatkan id :id"
+}
+```
+
+_400 - Bad Request_
+
+```json
+{
+  "message": "You forgot to give a nama"
+}
+OR
+{
+  "message": "nama format invalid"
+}
 ```
