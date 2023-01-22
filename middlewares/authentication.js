@@ -253,6 +253,29 @@ let findRencanaStudi = async (req, res, next) => {
   }
 };
 
+let findRencana = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+    let findedRencanaStudi = await RencanaStudi.findByPk(id);
+    let validate = new Validator(
+      { findedRencanaStudi },
+      { findedRencanaStudi: "required" },
+      { required: "Rencana studi not found" }
+    );
+    validate.checkAsync(
+      () => {
+        next();
+      },
+      () => {
+        let msg = validate.errors.first("findedRencanaStudi");
+        throw { name: "validator", status: 404, msg };
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   checkMatkul,
   checkRequestMatkul,
@@ -262,4 +285,5 @@ module.exports = {
   checkQuota,
   countMatkulSelector,
   findRencanaStudi,
+  findRencana,
 };

@@ -1,8 +1,20 @@
-let { RencanaStudi } = require("../models/");
+let { RencanaStudi, Mahasiswa, Matkul } = require("../models/");
 class ControllerStudi {
   static async getAll(req, res, next) {
     try {
-      let data = await RencanaStudi.findAll();
+      let data = await RencanaStudi.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: [
+          {
+            model: Mahasiswa,
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+          },
+          {
+            model: Matkul,
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+          },
+        ],
+      });
       res.json(data);
     } catch (error) {
       next(error);
@@ -33,7 +45,7 @@ class ControllerStudi {
       );
       res.json({ message: "Rencana Studi berhasil diubah" });
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 
@@ -43,7 +55,7 @@ class ControllerStudi {
       let deletedRencanaStudi = await RencanaStudi.destroy({ where: { id } });
       res.json({ message: "Rencana studi berhasil dihapus" });
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 }

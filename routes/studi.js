@@ -6,6 +6,7 @@ let {
   checkQuota,
   countMatkulSelector,
   findRencanaStudi,
+  findRencana,
 } = require("../middlewares/authentication");
 
 app.get("/", studi.getAll);
@@ -22,6 +23,6 @@ app.patch(
   countMatkulSelector,
   studi.updateRencanaMatkul
 );
-app.delete("/:id", studi.deleteRencanaStudi);
+app.delete("/:id", findRencana, studi.deleteRencanaStudi);
 
 module.exports = app;
