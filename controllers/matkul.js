@@ -3,7 +3,10 @@ let { Matkul } = require("../models/");
 class ControllerMatkul {
   static async getAll(req, res, next) {
     try {
-      let data = await Matkul.findAll();
+      let data = await Matkul.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        order: [["id"]],
+      });
       res.json(data);
     } catch (error) {
       next();
@@ -15,7 +18,7 @@ class ControllerMatkul {
       let createdMatkul = await Matkul.create({ nama });
 
       res.status(201).json({
-        message: `Matkul ${nama} berhasil dimasukkan kedalam database dan mendapatkan id ${createdMatkul.id}`,
+        message: `Success create new matkul`,
       });
     } catch (error) {
       next(error);

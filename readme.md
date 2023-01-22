@@ -224,4 +224,75 @@ _Response (400 - Bad Request)_
 {
   "message": "You forgot to give a nama"
 }
+OR
+{
+  "message": "nama format invalid"
+}
 ```
+
+## 6. GET /matkul
+
+#### Description
+
+- Get all matkul
+
+#### Response
+
+_Response (200 - OK)_
+
+```json
+[
+  {
+    "id": Integer,
+    "nama": String
+  },
+  ...
+]
+```
+
+## 7. POST /matkul
+
+#### Description
+
+- Create new matkul
+
+#### Request
+
+- Body
+  ```json
+  {
+    "nama": String
+  }
+  ```
+
+#### Response
+
+_Response (201 - Created)_
+
+```json
+{
+  "message": "Success create new matkul"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "Nama matkul can't empty"
+}
+OR
+{
+    "message": "Nama matkul can only filled with character, number and white space"
+}
+OR
+{
+    "message": "Nama matkul length character must be at least 3 character"
+}
+```
+
+## 7. PATCH /matkul/:id
+
+#### Description
+
+- Create new matkul
