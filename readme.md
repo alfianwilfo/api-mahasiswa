@@ -374,6 +374,8 @@ _Response (404 - Not Found)_
 
 - Get all Rencana studi
 
+#### Response
+
 _Response (200 - OK)_
 
 ```json
@@ -411,15 +413,17 @@ _Response (200 - OK)_
   }
   ```
 
-  _Response (201 - Created)_
+#### Response
 
-  ```json
-  {
-    "message": "Success create new rencana studi"
-  }
-  ```
+_Response (201 - Created)_
 
-  _Response (400 - Bad Request)_
+```json
+{
+  "message": "Success create new rencana studi"
+}
+```
+
+_Response (400 - Bad Request)_
 
 ```json
 {
@@ -456,5 +460,87 @@ _Response (404 - Not Found)_
 OR
 {
     "message": "Matkul not found"
+}
+```
+
+## 12. PATCH /studi/:id
+
+#### Description
+
+- Update IdMatkul by id
+
+#### Request
+
+- Body
+
+  ```json
+  {
+    "IdMatkul": Integer,
+  }
+  ```
+
+#### Response
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "Success update rencana studi"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "You already pick this matkul"
+}
+OR
+{
+    "message": "IdMatkul can't empty"
+}
+OR
+{
+    "message": "Invalid IdMatkul format"
+}
+OR
+{
+    "message": "This matkul full booked"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Rencana studi not found"
+}
+OR
+{
+    "message": "Matkul not found"
+}
+```
+
+## 13. DELETE /studi/:id
+
+#### Description
+
+- Delete rencana studi by id
+
+#### Response
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "Rencana studi berhasil dihapus"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Rencana studi not found"
 }
 ```
