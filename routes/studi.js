@@ -7,6 +7,7 @@ let {
   countMatkulSelector,
   findRencanaStudi,
   findRencana,
+  validateInputForPatchStudi,
 } = require("../middlewares/authentication");
 
 app.get("/", studi.getAll);
@@ -19,8 +20,10 @@ app.post(
 );
 app.patch(
   "/:id",
+  validateInputForPatchStudi,
   findRencanaStudi,
   countMatkulSelector,
+
   studi.updateRencanaMatkul
 );
 app.delete("/:id", findRencana, studi.deleteRencanaStudi);

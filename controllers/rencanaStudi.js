@@ -35,7 +35,7 @@ class ControllerStudi {
     }
   }
 
-  static async updateRencanaMatkul(req, res) {
+  static async updateRencanaMatkul(req, res, next) {
     try {
       let { id } = req.params;
       let IdMatkul = +req.body.IdMatkul;
@@ -43,7 +43,7 @@ class ControllerStudi {
         { IdMatkul },
         { where: { id } }
       );
-      res.json({ message: "Rencana Studi berhasil diubah" });
+      res.json({ message: "Success update rencana studi" });
     } catch (error) {
       next(error);
     }
