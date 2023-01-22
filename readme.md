@@ -6,7 +6,14 @@ clone this repo then:
 npm install
 ```
 
-run:
+Then change database password with your own password on `config/config.json`
+
+**Now run** :
+
+```md
+npm run setup
+```
+
 **To start**
 
 ```md
