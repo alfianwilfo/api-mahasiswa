@@ -1,4 +1,4 @@
-let { Mahasiswa } = require("../models/index");
+let { Mahasiswa, RencanaStudi, Matkul } = require("../models/index");
 let Validator = require("validatorjs");
 class ControllerMahasiswa {
   static async getAll(req, res, next) {
@@ -12,15 +12,31 @@ class ControllerMahasiswa {
     }
   }
 
-  static async findById(req, res) {
+  static async findById(req, res, next) {
     try {
       let id = +req.params.id;
-      let data = await Mahasiswa.findByPk(id);
+      let data = await Mahasiswa.findByPk(id, {
+        include: [
+          {
+            model: RencanaStudi,
+            include: [
+              {
+                model: Matkul,
+                attributes: { exclude: ["createdAt", "updatedAt"] },
+              },
+            ],
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "IdMahasiswa", "IdMatkul"],
+            },
+          },
+        ],
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      });
       let input = { data: data };
       let rules = { data: "required" };
 
       let validation = new Validator(input, rules, {
-        required: "Mahasiswa tidak ditemukan",
+        required: "Mahasiswa not found",
       });
       validation.checkAsync(
         () => {
@@ -28,15 +44,11 @@ class ControllerMahasiswa {
         },
         () => {
           let msg = validation.errors.first("data");
-          throw { msg };
+          throw { name: "validator", status: 404, msg };
         }
       );
     } catch (error) {
-      if (error.msg) {
-        res.status(400).json({ message: error.msg });
-      } else {
-        res.status(500).json({ message: "Internal server error" });
-      }
+      next(error);
     }
   }
 
