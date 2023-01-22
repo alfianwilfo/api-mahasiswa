@@ -69,7 +69,7 @@ class ControllerMahasiswa {
       let { id } = req.params;
       let deleteMahasiswa = await Mahasiswa.destroy({ where: { id } });
 
-      res.json({ message: "Berhasil menghapus mahasiswa" });
+      res.json({ message: "Success delete mahasiswa" });
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }

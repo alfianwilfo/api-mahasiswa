@@ -148,10 +148,80 @@ _Response (200 - OK)_
 }
 ```
 
-_400 - Not Found_
+_404 - Not Found_
 
 ```json
 {
   "message": "Mahasiswa not found"
+}
+```
+
+&nbsp;
+
+## 4. DELETE /mahasiswa/:id
+
+#### Description
+
+- Delete mahasiswa by id
+
+#### Response
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "Success delete mahasiswa"
+}
+```
+
+_404 - Not Found_
+
+```json
+{
+  "message": "Mahasiswa not found"
+}
+```
+
+&nbsp;
+
+## 5. PATCH /mahasiswa/:id
+
+#### Description
+
+- Change mahasiswa name
+
+#### Request
+
+- Body
+
+  ```json
+  {
+    "nama": String
+  }
+  ```
+
+#### Response
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "Success update nama mahasiswa"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Mahasiswa not found"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "You forgot to give a nama"
 }
 ```
