@@ -61,6 +61,10 @@ List of available endpoints:
 
 ## 1. GET /mahasiswa
 
+#### Description
+
+- Get all mahasiswa
+
 #### Response
 
 _Response (200 - OK)_
@@ -79,13 +83,17 @@ _Response (200 - OK)_
 
 ## 2. POST /mahasiswa
 
+#### Description
+
+- Create mahasiswa
+
 #### Request
 
 - Body
 
   ```json
   {
-    "nama": String,
+    "nama": String
   }
   ```
 
@@ -108,5 +116,42 @@ _400 - Bad Request_
 OR
 {
   "message": "nama format invalid"
+}
+```
+
+&nbsp;
+
+## 3. GET /mahasiswa/:id
+
+#### Description
+
+- Get mahasiswa by id
+
+#### Response
+
+_Response (200 - OK)_
+
+```json
+{
+  "id": Integer,
+  "nama": String,
+  "RencanaStudis": [
+    {
+      "id": Integer,
+      "Matkul": {
+        "id": Integer,
+        "nama": String
+      }
+    },
+    ...
+  ]
+}
+```
+
+_400 - Not Found_
+
+```json
+{
+  "message": "Mahasiswa not found"
 }
 ```
