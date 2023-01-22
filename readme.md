@@ -295,4 +295,47 @@ OR
 
 #### Description
 
-- Create new matkul
+- Update matkul name
+
+#### Request
+
+- Body
+  ```json
+  {
+    "nama": String
+  }
+  ```
+
+#### Response
+
+_Response (200 - Created)_
+
+```json
+{
+  "message": "Success update nama matkul"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Matkul not found"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "Nama matkul can't empty"
+}
+OR
+{
+    "message": "Nama matkul can only filled with character, number and white space"
+}
+OR
+{
+    "message": "Nama matkul length character must be at least 3 character"
+}
+```
