@@ -1,7 +1,12 @@
 # How
 
-clone this repo
-then run:
+clone this repo then:
+
+```md
+npm install
+```
+
+run:
 **To start**
 
 ```md
