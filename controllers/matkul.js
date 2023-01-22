@@ -30,8 +30,8 @@ class ControllerMatkul {
       let { nama } = req.body;
       let { id } = req.params;
       let createdMatkul = await Matkul.update({ nama }, { where: { id } });
-      res.status(201).json({
-        message: `Success update Nama matkul`,
+      res.status(200).json({
+        message: `Success update nama matkul`,
       });
     } catch (error) {
       next(error);
