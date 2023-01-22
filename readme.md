@@ -1,7 +1,12 @@
 # How
 
-clone this repo
-then run:
+clone this repo then:
+
+```md
+npm install
+```
+
+run:
 **To start**
 
 ```md
@@ -85,7 +90,7 @@ _Response (200 - OK)_
 
 #### Description
 
-- Create mahasiswa
+- Create new mahasiswa
 
 #### Request
 
@@ -230,6 +235,8 @@ OR
 }
 ```
 
+&nbsp;
+
 ## 6. GET /matkul
 
 #### Description
@@ -249,6 +256,8 @@ _Response (200 - OK)_
   ...
 ]
 ```
+
+&nbsp;
 
 ## 7. POST /matkul
 
@@ -294,6 +303,8 @@ OR
     "message": "Nama matkul already registered"
 }
 ```
+
+&nbsp;
 
 ## 8. PATCH /matkul/:id
 
@@ -344,6 +355,8 @@ OR
 }
 ```
 
+&nbsp;
+
 ## 9. DELETE /matkul/:id
 
 #### Description
@@ -367,6 +380,8 @@ _Response (404 - Not Found)_
   "message": "Matkul not found"
 }
 ```
+
+&nbsp;
 
 ## 10. GET /studi
 
@@ -396,6 +411,8 @@ _Response (200 - OK)_
   ...
 ]
 ```
+
+&nbsp;
 
 ## 11. POST /studi
 
@@ -463,6 +480,8 @@ OR
 }
 ```
 
+&nbsp;
+
 ## 12. PATCH /studi/:id
 
 #### Description
@@ -521,6 +540,8 @@ OR
 }
 ```
 
+&nbsp;
+
 ## 13. DELETE /studi/:id
 
 #### Description
@@ -533,7 +554,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "message": "Rencana studi berhasil dihapus"
+  "message": "Success delete rencana studi"
 }
 ```
 
@@ -542,5 +563,19 @@ _Response (404 - Not Found)_
 ```json
 {
   "message": "Rencana studi not found"
+}
+```
+
+&nbsp;
+
+### Global Error
+
+#### Response
+
+_500 - Internal Server Error_
+
+```json
+{
+  "message": "Internal Server Error"
 }
 ```

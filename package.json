@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "setup": "npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "mysql2": "^3.0.1",
     "nodemon": "^2.0.20",
     "sequelize": "^6.28.0",
+    "sequelize-cli": "^6.5.2",
     "validatorjs": "^3.22.1"
   }
 }
