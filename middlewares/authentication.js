@@ -42,7 +42,7 @@ let checkRequestMatkul = async (req, res, next) => {
       },
       () => {
         let msg = validation.errors.first("nama");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 400, msg };
       }
     );
   } catch (error) {
@@ -71,7 +71,7 @@ let checkRequestMahasiswa = (req, res, next) => {
       },
       () => {
         let msg = validator.errors.first("nama");
-        throw { status: 401, name: "validator", msg };
+        throw { status: 400, name: "validator", msg };
       }
     );
   } catch (error) {
@@ -95,7 +95,7 @@ let checkMahasiswa = async (req, res, next) => {
       },
       () => {
         let msg = validateFindedMahasiswa.errors.first("findedMahasiswa");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 404, msg };
       }
     );
   } catch (error) {
@@ -154,7 +154,6 @@ let checkInputForStudi = async (req, res, next) => {
         } catch (error) {
           next(error);
         }
-        // next();
       },
       () => {
         let msg =
@@ -186,7 +185,7 @@ let checkQuota = async (req, res, next) => {
       },
       () => {
         let msg = validateCount.errors.first("countMatkulMahasiswa");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 400, msg };
       }
     );
   } catch (error) {
@@ -209,10 +208,67 @@ let countMatkulSelector = async (req, res, next) => {
     validate.checkAsync(
       () => {
         next();
+        console.log("masuk");
       },
       () => {
         let msg = validate.errors.first("countMatkulSelector");
-        throw { name: "validator", status: 401, msg };
+        throw { name: "validator", status: 400, msg };
+      }
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+let findRencanaStudi = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+
+    let findedRencanaStudi = await RencanaStudi.findByPk(id);
+    if (findedRencanaStudi.IdMatkul === +req.body.IdMatkul) {
+      throw {
+        name: "validator",
+        status: 400,
+        msg: "You already pick this matkul",
+      };
+    } else {
+      let validate = new Validator(
+        { findedRencanaStudi },
+        { findedRencanaStudi: "required" },
+        { required: "Rencana studi not found" }
+      );
+      validate.checkAsync(
+        () => {
+          req.idMatkulRencanaStudi = findedRencanaStudi.IdMatkul;
+          next();
+        },
+        () => {
+          let msg = validate.errors.first("findedRencanaStudi");
+          throw { name: "validator", status: 404, msg };
+        }
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+let findRencana = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+    let findedRencanaStudi = await RencanaStudi.findByPk(id);
+    let validate = new Validator(
+      { findedRencanaStudi },
+      { findedRencanaStudi: "required" },
+      { required: "Rencana studi not found" }
+    );
+    validate.checkAsync(
+      () => {
+        next();
+      },
+      () => {
+        let msg = validate.errors.first("findedRencanaStudi");
+        throw { name: "validator", status: 404, msg };
       }
     );
   } catch (error) {
@@ -228,4 +284,6 @@ module.exports = {
   checkInputForStudi,
   checkQuota,
   countMatkulSelector,
+  findRencanaStudi,
+  findRencana,
 };

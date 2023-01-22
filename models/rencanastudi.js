@@ -9,12 +9,30 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      RencanaStudi.belongsTo(models.Matkul, { foreignKey: "IdMatkul" });
+      RencanaStudi.belongsTo(models.Mahasiswa, { foreignKey: "IdMahasiswa" });
     }
   }
   RencanaStudi.init(
     {
-      IdMahasiswa: { type: DataTypes.INTEGER },
-      IdMatkul: { type: DataTypes.INTEGER },
+      IdMahasiswa: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Mahasiswas",
+          key: "id",
+        },
+        onUpdate: "cascade",
+        onDelete: "cascade",
+      },
+      IdMatkul: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Matkuls",
+          key: "id",
+        },
+        onUpdate: "cascade",
+        onDelete: "cascade",
+      },
     },
     {
       sequelize,

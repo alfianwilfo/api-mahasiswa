@@ -5,6 +5,8 @@ let {
   checkInputForStudi,
   checkQuota,
   countMatkulSelector,
+  findRencanaStudi,
+  findRencana,
 } = require("../middlewares/authentication");
 
 app.get("/", studi.getAll);
@@ -15,7 +17,12 @@ app.post(
   countMatkulSelector,
   studi.createRencanaStudi
 );
-app.patch("/:id", studi.updateRencanaMatkul);
-app.delete("/:id", studi.deleteRencanaStudi);
+app.patch(
+  "/:id",
+  findRencanaStudi,
+  countMatkulSelector,
+  studi.updateRencanaMatkul
+);
+app.delete("/:id", findRencana, studi.deleteRencanaStudi);
 
 module.exports = app;
