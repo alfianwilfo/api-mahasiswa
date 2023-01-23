@@ -17,9 +17,12 @@ class ControllerMatkul {
       let { nama } = req.body;
       let createdMatkul = await Matkul.create({ nama });
 
-      res.status(201).json({
-        message: `Success create new matkul`,
-      });
+      res
+        .status(201)
+        .json({
+          message: "Success create new matkul",
+          data: { id: createdMatkul.id, nama: createdMatkul.nama },
+        });
     } catch (error) {
       next(error);
     }

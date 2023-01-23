@@ -28,6 +28,7 @@ class ControllerMahasiswa {
             attributes: {
               exclude: ["createdAt", "updatedAt", "IdMahasiswa", "IdMatkul"],
             },
+            as: "Rencana_Studi",
           },
         ],
         attributes: { exclude: ["createdAt", "updatedAt"] },

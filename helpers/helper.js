@@ -14,7 +14,7 @@ let isInputValid = (data) => {
     rules = { nama: `required|regex:^[a-zA-Z]+[a-zA-Z-]*$` };
     msg = {
       required: "Nama mahasiswa can't empty",
-      regex: "Invalid nama mahasiswa",
+      regex: "Format nama mahasiswa invalid",
     };
   } else {
     from = "matkul";
@@ -52,13 +52,14 @@ let isMatkulExist = async (id) => {
   if (validation.fails()) {
     return {
       name: "validator",
-      status: 400,
+      status: 404,
       msg: validation.errors.first("findedMatkul"),
     };
   } else {
     return true;
   }
 };
+
 let isMahasiswaExist = async (id) => {
   let findedMahasiswa = await Mahasiswa.findByPk(id);
   let validateFindedMahasiswa = new Validator(

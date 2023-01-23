@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      RencanaStudi.belongsTo(models.Matkul, { foreignKey: "IdMatkul" });
+      RencanaStudi.belongsTo(models.Matkul, {
+        foreignKey: "IdMatkul",
+      });
       RencanaStudi.belongsTo(models.Mahasiswa, { foreignKey: "IdMahasiswa" });
     }
   }
