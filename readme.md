@@ -6,7 +6,7 @@ clone this repo then:
 npm install
 ```
 
-Then change database password with your own password on `config/config.json`
+Then change database password with your own username and password on `config/config.json` development environment
 
 **Now run** :
 
