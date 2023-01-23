@@ -1,6 +1,10 @@
 let Validator = require("validatorjs");
 let { Matkul, Mahasiswa, RencanaStudi } = require("../models/");
-let { isInputValid, isMatkulExist } = require("../helpers/helper");
+let {
+  isInputValid,
+  isMatkulExist,
+  isMahasiswaExist,
+} = require("../helpers/helper");
 let checkMatkul = async (req, res, next) => {
   try {
     let { id } = req.params;
@@ -15,7 +19,21 @@ let checkMatkul = async (req, res, next) => {
   }
 };
 
-let checkRequestMatkul = async (req, res, next) => {
+let checkInputNamaMatkul = async (req, res, next) => {
+  try {
+    let { nama } = req.body;
+    let checkInput = await isInputValid({ matkul: nama });
+    if (typeof checkInput === "object") {
+      throw checkInput;
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+let checkInputNamaMahasiswa = async (req, res, next) => {
   try {
     let { nama } = req.body;
     let checkInput = await isInputValid({ nama });
@@ -29,54 +47,15 @@ let checkRequestMatkul = async (req, res, next) => {
   }
 };
 
-let checkRequestMahasiswa = (req, res, next) => {
-  try {
-    let { nama } = req.body;
-    let validator = new Validator(
-      {
-        nama,
-      },
-      {
-        nama: `required|regex:^[a-zA-Z]+[a-zA-Z-]*$`,
-      },
-      {
-        required: "You forgot to give a :attribute",
-        regex: ":attribute format invalid",
-      }
-    );
-    validator.checkAsync(
-      () => {
-        next();
-      },
-      () => {
-        let msg = validator.errors.first("nama");
-        throw { status: 400, name: "validator", msg };
-      }
-    );
-  } catch (error) {
-    next(error);
-  }
-};
-
 let checkMahasiswa = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let findedMahasiswa = await Mahasiswa.findByPk(id);
-    let validateFindedMahasiswa = new Validator(
-      { findedMahasiswa },
-      { findedMahasiswa: "required" },
-      { required: "Mahasiswa not found" }
-    );
-
-    validateFindedMahasiswa.checkAsync(
-      () => {
-        next();
-      },
-      () => {
-        let msg = validateFindedMahasiswa.errors.first("findedMahasiswa");
-        throw { name: "validator", status: 404, msg };
-      }
-    );
+    let checkMhs = await isMahasiswaExist(id);
+    if (typeof checkMhs === "object") {
+      throw checkMhs;
+    } else {
+      next();
+    }
   } catch (error) {
     next(error);
   }
@@ -291,8 +270,8 @@ let validateInputForPatchStudi = async (req, res, next) => {
 
 module.exports = {
   checkMatkul,
-  checkRequestMatkul,
-  checkRequestMahasiswa,
+  checkInputNamaMatkul,
+  checkInputNamaMahasiswa,
   checkMahasiswa,
   checkInputForStudi,
   checkQuota,

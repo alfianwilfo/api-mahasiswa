@@ -32,21 +32,8 @@ class ControllerMahasiswa {
         ],
         attributes: { exclude: ["createdAt", "updatedAt"] },
       });
-      let input = { data: data };
-      let rules = { data: "required" };
 
-      let validation = new Validator(input, rules, {
-        required: "Mahasiswa not found",
-      });
-      validation.checkAsync(
-        () => {
-          res.json(data);
-        },
-        () => {
-          let msg = validation.errors.first("data");
-          throw { name: "validator", status: 404, msg };
-        }
-      );
+      res.json(data);
     } catch (error) {
       next(error);
     }
@@ -60,7 +47,7 @@ class ControllerMahasiswa {
         message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
       });
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+      next(error);
     }
   }
 
@@ -71,7 +58,7 @@ class ControllerMahasiswa {
 
       res.json({ message: "Success delete mahasiswa" });
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+      next(error);
     }
   }
 
