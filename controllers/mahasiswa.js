@@ -63,7 +63,7 @@ class ControllerMahasiswa {
     }
   }
 
-  static async updateMahasiswaName(req, res) {
+  static async updateMahasiswaName(req, res, next) {
     try {
       let { id } = req.params;
       let { nama } = req.body;
@@ -72,13 +72,8 @@ class ControllerMahasiswa {
         { where: { id } }
       );
       res.json({ message: "Success update nama mahasiswa" });
-      // res.json({ message: "Nama mahasiswa berhasil di update" });
     } catch (error) {
-      if (error.msg) {
-        res.status(404).json({ message: error.msg });
-      } else {
-        res.status(500).json({ message: "Internal server error" });
-      }
+      next(error);
     }
   }
 }
