@@ -6,10 +6,11 @@ const {
   checkMahasiswa,
 } = require("../middlewares/authentication");
 
-app.get("/", controller.getAll);
-app.get("/:id", checkMahasiswa, controller.findById);
-app.delete("/:id", checkMahasiswa, controller.deleteMahasiswa);
-app.use(checkInputNamaMahasiswa);
-app.post("/", controller.createMahasiswa);
-app.patch("/:id", checkMahasiswa, controller.updateMahasiswaName);
+app
+  .get("/", controller.getAll)
+  .get("/:id", checkMahasiswa, controller.findById)
+  .delete("/:id", checkMahasiswa, controller.deleteMahasiswa)
+  .use(checkInputNamaMahasiswa)
+  .post("/", controller.createMahasiswa)
+  .patch("/:id", checkMahasiswa, controller.updateMahasiswaName);
 module.exports = app;

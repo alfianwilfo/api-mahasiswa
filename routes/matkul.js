@@ -6,10 +6,11 @@ const {
   checkInputNamaMatkul,
 } = require("../middlewares/authentication");
 
-app.get("/", matkul.getAll);
-app.delete("/:id", checkMatkul, matkul.deleteMatkul);
-app.use(checkInputNamaMatkul);
-app.post("/", matkul.createMatkul);
-app.patch("/:id", checkMatkul, matkul.updateMatkulName);
+app
+  .get("/", matkul.getAll)
+  .delete("/:id", checkMatkul, matkul.deleteMatkul)
+  .use(checkInputNamaMatkul)
+  .post("/", matkul.createMatkul)
+  .patch("/:id", checkMatkul, matkul.updateMatkulName);
 
 module.exports = app;
