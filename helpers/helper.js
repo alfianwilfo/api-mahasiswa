@@ -121,10 +121,53 @@ let isAlreadyPicked = async (data) => {
   }
 };
 
+let checkMatkulMahasiswa = async (IdMahasiswa) => {
+  let countMatkulMahasiswa = await RencanaStudi.count({
+    where: { IdMahasiswa },
+  });
+  let validateCount = new Validator(
+    { countMatkulMahasiswa },
+    { countMatkulMahasiswa: "between:0,2" },
+    { between: "Your rencana studi has reached limit" }
+  );
+  if (validateCount.fails()) {
+    throw {
+      name: "validator",
+      status: 400,
+      msg: validateCount.errors.first("countMatkulMahasiswa"),
+    };
+  } else {
+    return true;
+  }
+};
+
+let checkQuotaMatkul = async (IdMatkul) => {
+  let countQuota = await RencanaStudi.count({
+    where: { IdMatkul },
+  });
+  let validate = new Validator(
+    { countQuota },
+    { countQuota: "max:3" },
+    { max: "This matkul full booked" }
+  );
+
+  if (validate.fails()) {
+    throw {
+      name: "validator",
+      status: 400,
+      msg: validate.errors.first("countQuota"),
+    };
+  } else {
+    return true;
+  }
+};
+
 module.exports = {
   isInputValid,
   isMatkulExist,
   isMahasiswaExist,
   isInputIdValid,
   isAlreadyPicked,
+  checkMatkulMahasiswa,
+  checkQuotaMatkul,
 };

@@ -6,6 +6,8 @@ let {
   isMahasiswaExist,
   isInputIdValid,
   isAlreadyPicked,
+  checkMatkulMahasiswa,
+  checkQuotaMatkul,
 } = require("../helpers/helper");
 let checkMatkul = async (req, res, next) => {
   try {
@@ -103,24 +105,12 @@ let checkInputForStudi = async (req, res, next) => {
 let checkQuota = async (req, res, next) => {
   try {
     let IdMahasiswa = +req.body.IdMahasiswa;
-
-    let countMatkulMahasiswa = await RencanaStudi.count({
-      where: { IdMahasiswa },
-    });
-    let validateCount = new Validator(
-      { countMatkulMahasiswa },
-      { countMatkulMahasiswa: "between:0,2" },
-      { between: "Your rencana studi has reached limit" }
-    );
-    validateCount.checkAsync(
-      () => {
-        next();
-      },
-      () => {
-        let msg = validateCount.errors.first("countMatkulMahasiswa");
-        throw { name: "validator", status: 400, msg };
-      }
-    );
+    let countMatkulMahasiswa = await checkMatkulMahasiswa(IdMahasiswa);
+    if (typeof countMatkulMahasiswa === "object") {
+      throw countMatkulMahasiswa;
+    } else {
+      next();
+    }
   } catch (error) {
     next(error);
   }
@@ -129,29 +119,17 @@ let checkQuota = async (req, res, next) => {
 let countMatkulSelector = async (req, res, next) => {
   try {
     let IdMatkul = +req.body.IdMatkul;
-    let findMatkul = await Matkul.findByPk(IdMatkul);
-    if (!findMatkul) {
-      throw { name: "validator", status: 404, msg: "Matkul not found" };
-    }
-    let countMatkulSelector = await RencanaStudi.count({
-      where: { IdMatkul },
-    });
-
-    let validate = new Validator(
-      { countMatkulSelector },
-      { countMatkulSelector: "max:3" },
-      { max: "This matkul full booked" }
-    );
-
-    validate.checkAsync(
-      () => {
+    let findMatkul = await isMatkulExist(IdMatkul);
+    if (typeof findMatkul === "object") {
+      throw findMatkul;
+    } else {
+      let countQuota = await checkQuotaMatkul(IdMatkul);
+      if (typeof countQuota === "object") {
+        throw countQuota;
+      } else {
         next();
-      },
-      () => {
-        let msg = validate.errors.first("countMatkulSelector");
-        throw { name: "validator", status: 400, msg };
       }
-    );
+    }
   } catch (error) {
     next(error);
   }
