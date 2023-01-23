@@ -32,21 +32,8 @@ class ControllerMahasiswa {
         ],
         attributes: { exclude: ["createdAt", "updatedAt"] },
       });
-      let input = { data: data };
-      let rules = { data: "required" };
 
-      let validation = new Validator(input, rules, {
-        required: "Mahasiswa not found",
-      });
-      validation.checkAsync(
-        () => {
-          res.json(data);
-        },
-        () => {
-          let msg = validation.errors.first("data");
-          throw { name: "validator", status: 404, msg };
-        }
-      );
+      res.json(data);
     } catch (error) {
       next(error);
     }

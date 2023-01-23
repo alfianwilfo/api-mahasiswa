@@ -2,18 +2,18 @@ const express = require("express");
 const app = express();
 const controller = require("../controllers/mahasiswa");
 const {
-  checkRequestMahasiswa,
+  checkInputNamaMahasiswa,
   checkMahasiswa,
 } = require("../middlewares/authentication");
 
 app.get("/", controller.getAll);
-app.post("/", checkRequestMahasiswa, controller.createMahasiswa);
-app.get("/:id", controller.findById);
+app.post("/", checkInputNamaMahasiswa, controller.createMahasiswa);
+app.get("/:id", checkMahasiswa, controller.findById);
 app.delete("/:id", checkMahasiswa, controller.deleteMahasiswa);
 app.patch(
   "/:id",
   checkMahasiswa,
-  checkRequestMahasiswa,
+  checkInputNamaMahasiswa,
   controller.updateMahasiswaName
 );
 module.exports = app;
