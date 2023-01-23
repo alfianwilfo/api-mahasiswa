@@ -8,6 +8,7 @@ let {
   isAlreadyPicked,
   checkMatkulMahasiswa,
   checkQuotaMatkul,
+  isRencanaStudiExist,
 } = require("../helpers/helper");
 let checkMatkul = async (req, res, next) => {
   try {
@@ -138,84 +139,12 @@ let countMatkulSelector = async (req, res, next) => {
 let findRencanaStudi = async (req, res, next) => {
   try {
     let { id } = req.params;
-
-    let findedRencanaStudi = await RencanaStudi.findByPk(id);
-
-    if (!findedRencanaStudi) {
-      throw {
-        name: "validator",
-        status: 404,
-        msg: "Rencana studi not found",
-      };
+    let isExist = await isRencanaStudiExist(id);
+    if (typeof isExist === "object") {
+      throw isExist;
     } else {
-      if (findedRencanaStudi.IdMatkul === +req.body.IdMatkul) {
-        throw {
-          name: "validator",
-          status: 400,
-          msg: "You already pick this matkul",
-        };
-      }
-      let validate = new Validator(
-        { findedRencanaStudi },
-        { findedRencanaStudi: "required" },
-        { required: "Rencana studi not found" }
-      );
-      validate.checkAsync(
-        () => {
-          req.idMatkulRencanaStudi = findedRencanaStudi.IdMatkul;
-          next();
-        },
-        () => {
-          let msg = validate.errors.first("findedRencanaStudi");
-          throw { name: "validator", status: 404, msg };
-        }
-      );
+      next();
     }
-  } catch (error) {
-    next(error);
-  }
-};
-
-let findRencana = async (req, res, next) => {
-  try {
-    let { id } = req.params;
-    let findedRencanaStudi = await RencanaStudi.findByPk(id);
-    let validate = new Validator(
-      { findedRencanaStudi },
-      { findedRencanaStudi: "required" },
-      { required: "Rencana studi not found" }
-    );
-    validate.checkAsync(
-      () => {
-        next();
-      },
-      () => {
-        let msg = validate.errors.first("findedRencanaStudi");
-        throw { name: "validator", status: 404, msg };
-      }
-    );
-  } catch (error) {
-    next(error);
-  }
-};
-
-let validateInputForPatchStudi = async (req, res, next) => {
-  try {
-    let IdMatkul = req.body.IdMatkul;
-    let validate = new Validator(
-      { IdMatkul },
-      { IdMatkul: "required|numeric" },
-      { numeric: "Invalid IdMatkul format", required: "IdMatkul can't empty" }
-    );
-    validate.checkAsync(
-      () => {
-        next();
-      },
-      () => {
-        let msg = validate.errors.first("IdMatkul");
-        throw { name: "validator", status: 400, msg };
-      }
-    );
   } catch (error) {
     next(error);
   }
@@ -230,6 +159,4 @@ module.exports = {
   checkQuota,
   countMatkulSelector,
   findRencanaStudi,
-  findRencana,
-  validateInputForPatchStudi,
 };

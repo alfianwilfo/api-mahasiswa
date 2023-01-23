@@ -4,7 +4,6 @@ let { Matkul, Mahasiswa, RencanaStudi } = require("../models/");
 
 let isInputValid = (data) => {
   let { nama, matkul } = data;
-  console.log(data, "??");
   let from;
   let val;
   let rules;
@@ -162,6 +161,24 @@ let checkQuotaMatkul = async (IdMatkul) => {
   }
 };
 
+let isRencanaStudiExist = async (id) => {
+  let findRencanaStudi = await RencanaStudi.findByPk(id);
+  let validate = new Validator(
+    { findRencanaStudi },
+    { findRencanaStudi: "required" },
+    { required: "Rencana studi not found" }
+  );
+  if (validate.fails()) {
+    return {
+      name: "validator",
+      status: 404,
+      msg: validate.errors.first("findRencanaStudi"),
+    };
+  } else {
+    return true;
+  }
+};
+
 module.exports = {
   isInputValid,
   isMatkulExist,
@@ -170,4 +187,5 @@ module.exports = {
   isAlreadyPicked,
   checkMatkulMahasiswa,
   checkQuotaMatkul,
+  isRencanaStudiExist,
 };

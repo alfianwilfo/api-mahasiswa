@@ -38,9 +38,11 @@ class ControllerStudi {
   static async updateRencanaMatkul(req, res, next) {
     try {
       let { id } = req.params;
+      let IdMahasiswa = +req.body.IdMahasiswa;
+
       let IdMatkul = +req.body.IdMatkul;
       let updatedRencanaMatkul = await RencanaStudi.update(
-        { IdMatkul },
+        { IdMatkul, IdMahasiswa },
         { where: { id } }
       );
       res.json({ message: "Success update rencana studi" });

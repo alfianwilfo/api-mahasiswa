@@ -6,26 +6,14 @@ let {
   checkQuota,
   countMatkulSelector,
   findRencanaStudi,
-  findRencana,
-  validateInputForPatchStudi,
 } = require("../middlewares/authentication");
 
-app.get("/", studi.getAll);
-app.post(
-  "/",
-  checkInputForStudi,
-  checkQuota,
-  countMatkulSelector,
-  studi.createRencanaStudi
-);
-app.patch(
-  "/:id",
-  validateInputForPatchStudi,
-  findRencanaStudi,
-  countMatkulSelector,
-
-  studi.updateRencanaMatkul
-);
-app.delete("/:id", findRencana, studi.deleteRencanaStudi);
+app
+  .get("/", studi.getAll)
+  .delete("/:id", findRencanaStudi, studi.deleteRencanaStudi)
+  .use(checkInputForStudi)
+  .use(countMatkulSelector)
+  .post("/", checkQuota, studi.createRencanaStudi)
+  .patch("/:id", findRencanaStudi, studi.updateRencanaMatkul);
 
 module.exports = app;
