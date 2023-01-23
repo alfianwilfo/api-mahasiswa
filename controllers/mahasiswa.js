@@ -47,7 +47,7 @@ class ControllerMahasiswa {
         message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
       });
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+      next(error);
     }
   }
 
@@ -58,7 +58,7 @@ class ControllerMahasiswa {
 
       res.json({ message: "Success delete mahasiswa" });
     } catch (error) {
-      res.status(500).json({ message: "Internal server error" });
+      next(error);
     }
   }
 

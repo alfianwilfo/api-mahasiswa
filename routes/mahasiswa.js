@@ -7,13 +7,9 @@ const {
 } = require("../middlewares/authentication");
 
 app.get("/", controller.getAll);
-app.post("/", checkInputNamaMahasiswa, controller.createMahasiswa);
 app.get("/:id", checkMahasiswa, controller.findById);
 app.delete("/:id", checkMahasiswa, controller.deleteMahasiswa);
-app.patch(
-  "/:id",
-  checkMahasiswa,
-  checkInputNamaMahasiswa,
-  controller.updateMahasiswaName
-);
+app.use(checkInputNamaMahasiswa);
+app.post("/", controller.createMahasiswa);
+app.patch("/:id", checkMahasiswa, controller.updateMahasiswaName);
 module.exports = app;
