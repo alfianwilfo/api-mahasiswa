@@ -3,12 +3,13 @@ const matkul = require("../controllers/matkul");
 const app = express();
 const {
   checkMatkul,
-  checkRequestMatkul,
+  checkInputName,
 } = require("../middlewares/authentication");
 
 app.get("/", matkul.getAll);
-app.post("/", checkRequestMatkul, matkul.createMatkul);
-app.patch("/:id", checkMatkul, checkRequestMatkul, matkul.updateMatkulName);
 app.delete("/:id", checkMatkul, matkul.deleteMatkul);
+app.use(checkInputName);
+app.post("/", matkul.createMatkul);
+app.patch("/:id", checkMatkul, matkul.updateMatkulName);
 
 module.exports = app;

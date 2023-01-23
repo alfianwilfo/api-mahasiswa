@@ -15,7 +15,7 @@ let checkMatkul = async (req, res, next) => {
   }
 };
 
-let checkRequestMatkul = async (req, res, next) => {
+let checkInputName = async (req, res, next) => {
   try {
     let { nama } = req.body;
     let checkInput = await isInputValid({ nama });
@@ -291,7 +291,7 @@ let validateInputForPatchStudi = async (req, res, next) => {
 
 module.exports = {
   checkMatkul,
-  checkRequestMatkul,
+  checkInputName,
   checkRequestMahasiswa,
   checkMahasiswa,
   checkInputForStudi,

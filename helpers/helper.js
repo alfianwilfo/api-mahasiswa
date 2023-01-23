@@ -20,7 +20,7 @@ let isInputValid = (data) => {
       name: "validator",
       status: 400,
       msg: validation.errors.first("nama"),
-    }; // The first name field is required.
+    };
   } else {
     return true;
   }
@@ -38,7 +38,7 @@ let isMatkulExist = async (id) => {
       name: "validator",
       status: 400,
       msg: validation.errors.first("findedMatkul"),
-    }; // The first name field is required.
+    };
   } else {
     return true;
   }
