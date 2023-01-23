@@ -1,6 +1,6 @@
 let Validator = require("validatorjs");
 // let check = await isInputValid({ nama });
-let { Matkul, Mahasiswa } = require("../models/");
+let { Matkul, Mahasiswa, RencanaStudi } = require("../models/");
 
 let isInputValid = (data) => {
   let { nama, matkul } = data;
@@ -79,4 +79,52 @@ let isMahasiswaExist = async (id) => {
   }
 };
 
-module.exports = { isInputValid, isMatkulExist, isMahasiswaExist };
+let isInputIdValid = async (data) => {
+  let validateId = new Validator(
+    data,
+    {
+      IdMahasiswa: "min:1",
+      IdMatkul: "min:1",
+    },
+    {
+      min: "Invalid format :attribute",
+    }
+  );
+  if (validateId.fails()) {
+    if (validateId.errors.first("IdMahasiswa")) {
+      return {
+        name: "validator",
+        status: 400,
+        msg: validateId.errors.first("IdMahasiswa"),
+      };
+    } else {
+      return {
+        name: "validator",
+        status: 400,
+        msg: validateId.errors.first("IdMatkul"),
+      };
+    }
+  } else {
+    return true;
+  }
+};
+
+let isAlreadyPicked = async (data) => {
+  let { IdMatkul, IdMahasiswa } = data;
+  let isTrue = await RencanaStudi.findOne({
+    where: { IdMatkul, IdMahasiswa },
+  });
+  if (!isTrue) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+module.exports = {
+  isInputValid,
+  isMatkulExist,
+  isMahasiswaExist,
+  isInputIdValid,
+  isAlreadyPicked,
+};

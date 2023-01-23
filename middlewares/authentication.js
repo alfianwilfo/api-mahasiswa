@@ -4,6 +4,8 @@ let {
   isInputValid,
   isMatkulExist,
   isMahasiswaExist,
+  isInputIdValid,
+  isAlreadyPicked,
 } = require("../helpers/helper");
 let checkMatkul = async (req, res, next) => {
   try {
@@ -65,61 +67,34 @@ let checkInputForStudi = async (req, res, next) => {
   try {
     let IdMahasiswa = +req.body.IdMahasiswa;
     let IdMatkul = +req.body.IdMatkul;
-    let validateId = new Validator(
-      {
-        IdMahasiswa,
-        IdMatkul,
-      },
-      {
-        IdMahasiswa: "min:1",
-        IdMatkul: "min:1",
-      },
-      {
-        min: "Invalid format :attribute",
-      }
-    );
-    validateId.checkAsync(
-      async () => {
-        try {
-          let findedMahasiswa = await Mahasiswa.findByPk(IdMahasiswa);
-          if (!findedMahasiswa) {
-            throw {
-              name: "validator",
-              status: 404,
-              msg: "Mahasiswa not found",
-            };
-          }
-          let findedMatkul = await Matkul.findByPk(IdMatkul);
-          if (!findedMatkul) {
-            throw {
-              name: "validator",
-              status: 404,
-              msg: "Matkul not found",
-            };
-          }
-          let isAlreadyPicked = await RencanaStudi.findOne({
-            where: { IdMatkul, IdMahasiswa },
+    let validateInput = await isInputIdValid({ IdMahasiswa, IdMatkul });
+    if (typeof validateInput === "object") {
+      throw validateInput;
+    } else {
+      let findMahasiswa = await isMahasiswaExist(IdMahasiswa);
+      if (typeof findMahasiswa === "object") {
+        throw findMahasiswa;
+      } else {
+        let findMatkul = await isMatkulExist(IdMatkul);
+        if (typeof findMatkul === "object") {
+          throw findMatkul;
+        } else {
+          let checkingAlreadyPickedOrNot = await isAlreadyPicked({
+            IdMahasiswa,
+            IdMatkul,
           });
-          if (!isAlreadyPicked) {
+          if (!checkingAlreadyPickedOrNot) {
             next();
           } else {
             throw {
               name: "validator",
               status: 400,
-              msg: "You already pick this matkul",
+              msg: "You already pick this Matkul",
             };
           }
-        } catch (error) {
-          next(error);
         }
-      },
-      () => {
-        let msg =
-          validateId.errors.first("IdMahasiswa") ||
-          validateId.errors.first("IdMatkul");
-        throw { name: "validator", status: 400, msg };
       }
-    );
+    }
   } catch (error) {
     next(error);
   }
