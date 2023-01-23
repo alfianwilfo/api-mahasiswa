@@ -1,4 +1,3 @@
-let Validator = require("validatorjs");
 let { Matkul } = require("../models/");
 class ControllerMatkul {
   static async getAll(req, res, next) {
@@ -18,7 +17,8 @@ class ControllerMatkul {
       let createdMatkul = await Matkul.create({ nama });
 
       res.status(201).json({
-        message: `Success create new matkul`,
+        message: "Success create new matkul",
+        data: { id: createdMatkul.id, nama: createdMatkul.nama },
       });
     } catch (error) {
       next(error);

@@ -1,5 +1,4 @@
 let { Mahasiswa, RencanaStudi, Matkul } = require("../models/index");
-let Validator = require("validatorjs");
 class ControllerMahasiswa {
   static async getAll(req, res, next) {
     try {
@@ -28,6 +27,7 @@ class ControllerMahasiswa {
             attributes: {
               exclude: ["createdAt", "updatedAt", "IdMahasiswa", "IdMatkul"],
             },
+            as: "Rencana_Studi",
           },
         ],
         attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -43,9 +43,9 @@ class ControllerMahasiswa {
     try {
       let { nama } = req.body;
       let createdMahasiswa = await Mahasiswa.create({ nama });
-      res.status(201).json({
-        message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
-      });
+      res
+        .status(201)
+        .json({ id: createdMahasiswa.id, nama: createdMahasiswa.nama });
     } catch (error) {
       next(error);
     }
@@ -55,14 +55,13 @@ class ControllerMahasiswa {
     try {
       let { id } = req.params;
       let deleteMahasiswa = await Mahasiswa.destroy({ where: { id } });
-
       res.json({ message: "Success delete mahasiswa" });
     } catch (error) {
       next(error);
     }
   }
 
-  static async updateMahasiswaName(req, res) {
+  static async updateMahasiswaName(req, res, next) {
     try {
       let { id } = req.params;
       let { nama } = req.body;
@@ -71,13 +70,8 @@ class ControllerMahasiswa {
         { where: { id } }
       );
       res.json({ message: "Success update nama mahasiswa" });
-      // res.json({ message: "Nama mahasiswa berhasil di update" });
     } catch (error) {
-      if (error.msg) {
-        res.status(404).json({ message: error.msg });
-      } else {
-        res.status(500).json({ message: "Internal server error" });
-      }
+      next(error);
     }
   }
 }

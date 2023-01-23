@@ -6,7 +6,7 @@ clone this repo then:
 npm install
 ```
 
-Then change database password with your own username and password on `config/config.json` development environment
+Then change database password with your own username and password on `config/config.json` (development environment)
 
 **Now run** :
 
@@ -101,6 +101,14 @@ _Response (200 - OK)_
 
 #### Request
 
+- Headers
+
+  ```json
+  {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+  ```
+
 - Body
 
   ```json
@@ -115,7 +123,8 @@ _Response (201 - Created)_
 
 ```json
 {
-  "message": ":nama berhasil ditambahkan kedalam database dan mendapatkan id :id"
+  "id": Integer,
+  "nama": String
 }
 ```
 
@@ -123,11 +132,11 @@ _400 - Bad Request_
 
 ```json
 {
-  "message": "You forgot to give a nama"
+  "message": "Nama mahasiswa can't empty"
 }
 OR
 {
-  "message": "nama format invalid"
+  "message": "Invalid nama mahasiswa"
 }
 ```
 
@@ -147,7 +156,7 @@ _Response (200 - OK)_
 {
   "id": Integer,
   "nama": String,
-  "RencanaStudis": [
+  "Rencana_Studi": [
     {
       "id": Integer,
       "Matkul": {
@@ -204,6 +213,14 @@ _404 - Not Found_
 
 #### Request
 
+- Headers
+
+  ```json
+  {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+  ```
+
 - Body
 
   ```json
@@ -234,11 +251,11 @@ _Response (400 - Bad Request)_
 
 ```json
 {
-  "message": "You forgot to give a nama"
+  "message": "Nama mahasiswa can't empty"
 }
 OR
 {
-  "message": "nama format invalid"
+  "message": "Format nama mahasiswa invalid"
 }
 ```
 
@@ -274,6 +291,14 @@ _Response (200 - OK)_
 
 #### Request
 
+- Headers
+
+  ```json
+  {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+  ```
+
 - Body
   ```json
   {
@@ -287,7 +312,11 @@ _Response (201 - Created)_
 
 ```json
 {
-  "message": "Success create new matkul"
+  "message": "Success create new matkul",
+  "data": {
+    "id": Integer,
+    "nama": String
+  }
 }
 ```
 
@@ -317,9 +346,17 @@ OR
 
 #### Description
 
-- Update matkul name
+- Update matkul name by id
 
 #### Request
+
+- Headers
+
+  ```json
+  {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+  ```
 
 - Body
   ```json
@@ -359,6 +396,10 @@ OR
 OR
 {
     "message": "Nama matkul length character must be at least 3 character"
+}
+OR
+{
+    "message": "Nama matkul already registered"
 }
 ```
 
@@ -429,11 +470,21 @@ _Response (200 - OK)_
 
 #### Request
 
+- Headers
+
+  ```json
+  {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+  ```
+
 - Body
 
   ```json
   {
     "IdMahasiswa": Integer,
+    "IdMatkul": Integer,
+
   }
   ```
 
@@ -460,10 +511,6 @@ OR
 OR
 {
     "message": "You already pick this matkul"
-}
-OR
-{
-    "message": "This rencana studi has reached limit"
 }
 OR
 {
@@ -497,6 +544,14 @@ OR
 
 #### Request
 
+- Headers
+
+  ```json
+  {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+  ```
+
 - Body
 
   ```json
@@ -523,11 +578,11 @@ _Response (400 - Bad Request)_
 }
 OR
 {
-    "message": "IdMatkul can't empty"
+    "message": "Invalid format IdMatkul"
 }
 OR
 {
-    "message": "Invalid IdMatkul format"
+    "message": "Invalid format IdMahasiswa"
 }
 OR
 {
@@ -544,6 +599,10 @@ _Response (404 - Not Found)_
 OR
 {
     "message": "Matkul not found"
+}
+OR
+{
+    "message": "Mahasiswa not found"
 }
 ```
 

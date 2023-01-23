@@ -41,6 +41,9 @@ let checkInputNamaMatkul = async (req, res, next) => {
 let checkInputNamaMahasiswa = async (req, res, next) => {
   try {
     let { nama } = req.body;
+    if (nama === undefined) {
+      nama = "";
+    }
     let checkInput = await isInputValid({ nama });
     if (typeof checkInput === "object") {
       throw checkInput;
