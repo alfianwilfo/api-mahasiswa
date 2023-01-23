@@ -6,7 +6,7 @@ clone this repo then:
 npm install
 ```
 
-Then change database password with your own username and password on `config/config.json` development environment
+Then change database password with your own username and password on `config/config.json` (development environment)
 
 **Now run** :
 
@@ -101,6 +101,14 @@ _Response (200 - OK)_
 
 #### Request
 
+- Headers
+
+  ```json
+  {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+  ```
+
 - Body
 
   ```json
@@ -115,7 +123,8 @@ _Response (201 - Created)_
 
 ```json
 {
-  "message": ":nama berhasil ditambahkan kedalam database dan mendapatkan id :id"
+  "id": Integer,
+  "nama": String
 }
 ```
 
@@ -123,11 +132,11 @@ _400 - Bad Request_
 
 ```json
 {
-  "message": "You forgot to give a nama"
+  "message": "Nama mahasiswa can't empty"
 }
 OR
 {
-  "message": "nama format invalid"
+  "message": "Invalid nama mahasiswa"
 }
 ```
 

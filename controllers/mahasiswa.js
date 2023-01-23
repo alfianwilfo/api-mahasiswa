@@ -43,9 +43,9 @@ class ControllerMahasiswa {
     try {
       let { nama } = req.body;
       let createdMahasiswa = await Mahasiswa.create({ nama });
-      res.status(201).json({
-        message: `${nama} berhasil ditambahkan kedalam database dan mendapatkan id ${createdMahasiswa.id}`,
-      });
+      res
+        .status(201)
+        .json({ id: createdMahasiswa.id, nama: createdMahasiswa.nama });
     } catch (error) {
       next(error);
     }
