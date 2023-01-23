@@ -1,5 +1,6 @@
 let Validator = require("validatorjs");
 // let check = await isInputValid({ nama });
+let { Matkul } = require("../models/");
 
 let isInputValid = (data) => {
   let { nama } = data;
@@ -25,4 +26,22 @@ let isInputValid = (data) => {
   }
 };
 
-module.exports = { isInputValid };
+let isMatkulExist = async (id) => {
+  let findedMatkul = await Matkul.findByPk(id);
+  let validation = new Validator(
+    { findedMatkul },
+    { findedMatkul: "required" },
+    { required: "Matkul not found" }
+  );
+  if (validation.fails()) {
+    return {
+      name: "validator",
+      status: 400,
+      msg: validation.errors.first("findedMatkul"),
+    }; // The first name field is required.
+  } else {
+    return true;
+  }
+};
+
+module.exports = { isInputValid, isMatkulExist };

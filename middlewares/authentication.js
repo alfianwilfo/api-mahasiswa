@@ -1,24 +1,15 @@
 let Validator = require("validatorjs");
 let { Matkul, Mahasiswa, RencanaStudi } = require("../models/");
-let { isInputValid } = require("../helpers/helper");
+let { isInputValid, isMatkulExist } = require("../helpers/helper");
 let checkMatkul = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let findedMatkul = await Matkul.findByPk(id);
-    let validation = new Validator(
-      { findedMatkul },
-      { findedMatkul: "required" },
-      { required: "Matkul not found" }
-    );
-    validation.checkAsync(
-      () => {
-        next();
-      },
-      () => {
-        let msg = validation.errors.first("findedMatkul");
-        throw { name: "validator", status: 404, msg: msg };
-      }
-    );
+    let findMatkul = await isMatkulExist(id);
+    if (typeof findMatkul === "object") {
+      throw findMatkul;
+    } else {
+      next();
+    }
   } catch (error) {
     next(error);
   }
