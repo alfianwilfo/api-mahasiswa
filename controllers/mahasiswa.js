@@ -1,5 +1,4 @@
 let { Mahasiswa, RencanaStudi, Matkul } = require("../models/index");
-let Validator = require("validatorjs");
 class ControllerMahasiswa {
   static async getAll(req, res, next) {
     try {
@@ -56,7 +55,6 @@ class ControllerMahasiswa {
     try {
       let { id } = req.params;
       let deleteMahasiswa = await Mahasiswa.destroy({ where: { id } });
-
       res.json({ message: "Success delete mahasiswa" });
     } catch (error) {
       next(error);
